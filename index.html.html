@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منيو مطعم الخيمة - لوحة الإدارة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ====== RESET & BASE ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0a0806;
+            min-height: 100vh;
+            padding: 1.5rem;
+            background-image: radial-gradient(ellipse at 10% 20%, rgba(180, 120, 80, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 90% 80%, rgba(180, 120, 80, 0.06) 0%, transparent 50%);
+        }
+
+        /* ====== SCROLLBAR ====== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e8ddd0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b08868;
+            border-radius: 10px;
+        }
+
+        /* ====== NAV ====== */
+        .admin-nav {
+            max-width: 1300px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(200, 170, 145, 0.15);
+        }
+
+        .admin-nav .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ecdac8;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .admin-nav .brand i {
+            color: #c9a87c;
+            font-size: 1.6rem;
+        }
+
+        .admin-nav .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav .nav-links button {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            color: #b8a08e;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-nav .nav-links button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f5ede7;
+        }
+
+        .admin-nav .nav-links button.active {
+            background: linear-gradient(135deg, #7a5538, #5a3d28);
+            color: #fcf3e9;
+            box-shadow: 0 8px 30px rgba(90, 60, 40, 0.25);
+        }
+
+        .admin-nav .nav-links button .badge {
+            background: #c0392b;
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ====== MAIN CONTAINER ====== */
+        .menu-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .menu-container {
+            background: linear-gradient(165deg, #f8efe5 0%, #ede0d2 100%);
+            border-radius: 50px 50px 30px 30px;
+            padding: 2.5rem 2.8rem 3rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(200, 170, 140, 0.3) inset;
+        }
+
+        /* ====== HEADER ====== */
+        .restaurant-header {
+            text-align: center;
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .restaurant-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #b88b64, #8b6542, #b88b64, transparent);
+            border-radius: 4px;
+        }
+
+        .restaurant-header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #2c1a0e;
+            letter-spacing: 4px;
+            text-shadow: 0 2px 0 #dcc4ae, 0 4px 20px rgba(150, 100, 60, 0.15);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .restaurant-header h1 .tent-icon {
+            display: inline-block;
+            background: linear-gradient(135deg, #a77b58, #7a5538);
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            color: #f7ede1;
+            font-size: 2.2rem;
+            margin: 0 8px;
+            box-shadow: 0 4px 15px rgba(100, 65, 35, 0.3);
+        }
+
+        .restaurant-header h1 .tent-icon i {
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #6a4d34;
+            background: rgba(200, 170, 145, 0.25);
+            backdrop-filter: blur(6px);
+            display: inline-block;
+            padding: 0.4rem 2.5rem;
+            border-radius: 60px;
+            margin-top: 0.4rem;
+            font-weight: 600;
+            border: 1px solid rgba(180, 145, 115, 0.25);
+        }
+
+        /* ====== TABS ====== */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding: 0.3rem;
+            background: rgba(200, 175, 155, 0.15);
+            border-radius: 80px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(180, 150, 125, 0.15);
+        }
+
+        .tab-btn {
+            font-family: 'Cairo', sans-serif;
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.6rem;
+            border-radius: 60px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #4d3424;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn i {
+            color: #8a674b;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(160, 125, 100, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #7a5538, #5a3d28);
+            color: #fcf3e9;
+            box-shadow: 0 8px 30px rgba(90, 60, 40, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active i {
+            color: #f0dcc8;
+        }
+
+        .tab-btn .count-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.05rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .tab-btn.active .count-badge {
+            background: rgba(255, 215, 180, 0.2);
+        }
+
+        /* ====== SECTIONS ====== */
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ====== MENU GRID ====== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .menu-item {
+            background: linear-gradient(165deg, #ffffff, #faf3eb);
+            border-radius: 24px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(200, 175, 155, 0.25);
+            box-shadow: 0 8px 25px rgba(80, 55, 35, 0.08);
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(80, 55, 35, 0.18);
+            border-color: rgba(180, 145, 115, 0.4);
+        }
+
+        .menu-item .image-container {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e8d5c0, #dcc4ae);
+        }
+
+        .menu-item .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-item:hover .image-container img {
+            transform: scale(1.06);
+        }
+
+        .menu-item .image-container .category-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            color: #f5ede7;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item .popular-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: #fff;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);
+            z-index: 3;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item .item-content {
+            padding: 0.8rem 1rem 1rem;
+        }
+
+        .menu-item .item-content h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #2c1a0e;
+            margin-bottom: 2px;
+        }
+
+        .menu-item .item-content .desc {
+            font-size: 0.75rem;
+            color: #7a604b;
+            font-weight: 400;
+            margin: 3px 0 8px;
+            line-height: 1.4;
+        }
+
+        .menu-item .item-content .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .menu-item .item-content .price {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #6b442b;
+            background: linear-gradient(135deg, #f5ebe1, #eee0d2);
+            padding: 0.05rem 1rem;
+            border-radius: 60px;
+            border: 1px solid rgba(180, 145, 115, 0.2);
+        }
+
+        .menu-item .item-content .price .currency {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #9a7a60;
+        }
+
+        .menu-item .item-content .add-btn {
+            background: linear-gradient(135deg, #7a5538, #5a3d28);
+            border: none;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(90, 60, 40, 0.2);
+        }
+
+        .menu-item .item-content .add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(90, 60, 40, 0.35);
+        }
+
+        /* ====== MAIN LAYOUT ====== */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* ====== CART SIDEBAR ====== */
+        .cart-sidebar {
+            background: linear-gradient(165deg, #ffffff, #faf3eb);
+            border-radius: 30px;
+            padding: 1.5rem;
+            border: 1px solid rgba(200, 175, 155, 0.25);
+            box-shadow: 0 8px 30px rgba(80, 55, 35, 0.1);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .cart-sidebar .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(180, 145, 115, 0.2);
+            margin-bottom: 1rem;
+        }
+
+        .cart-sidebar .cart-header h2 {
+            font-size: 1.2rem;
+            color: #2c1a0e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-sidebar .cart-header h2 i {
+            color: #7a5538;
+        }
+
+        .cart-sidebar .cart-header .cart-count {
+            background: linear-gradient(135deg, #7a5538, #5a3d28);
+            color: #fff;
+            padding: 0.1rem 0.7rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .cart-items {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .cart-items::-webkit-scrollbar {
+            width: 4px;
+        }
+        .cart-items::-webkit-scrollbar-track {
+            background: #e8ddd0;
+            border-radius: 10px;
+        }
+        .cart-items::-webkit-scrollbar-thumb {
+            background: #b08868;
+            border-radius: 10px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(180, 145, 115, 0.1);
+        }
+
+        .cart-item .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-item .cart-item-info .item-name {
+            font-weight: 600;
+            color: #2c1a0e;
+            font-size: 0.9rem;
+        }
+
+        .cart-item .cart-item-info .item-qty {
+            background: rgba(180, 145, 115, 0.15);
+            padding: 0.05rem 0.5rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #5a3d28;
+        }
+
+        .cart-item .cart-item-price {
+            font-weight: 700;
+            color: #6b442b;
+            font-size: 0.85rem;
+        }
+
+        .cart-item .remove-btn {
+            background: none;
+            border: none;
+            color: #c0392b;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 0 4px;
+            transition: 0.2s;
+        }
+
+        .cart-item .remove-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-top: 2px solid rgba(180, 145, 115, 0.2);
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2c1a0e;
+        }
+
+        .cart-total .total-price {
+            color: #6b442b;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 1.5rem 0;
+            color: #7a604b;
+        }
+
+        .empty-cart i {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            margin-bottom: 0.3rem;
+        }
+
+        /* ====== ORDER FORM ====== */
+        .order-form {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid rgba(180, 145, 115, 0.15);
+        }
+
+        .order-form .form-group {
+            margin-bottom: 0.7rem;
+        }
+
+        .order-form label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #4d3424;
+            margin-bottom: 3px;
+        }
+
+        .order-form label i {
+            color: #7a5538;
+            margin-left: 6px;
+        }
+
+        .order-form input,
+        .order-form select,
+        .order-form textarea {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            border: 2px solid rgba(180, 145, 115, 0.2);
+            border-radius: 14px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85rem;
+            background: #fffcf8;
+            transition: 0.3s;
+            color: #2c1a0e;
+        }
+
+        .order-form input:focus,
+        .order-form select:focus,
+        .order-form textarea:focus {
+            outline: none;
+            border-color: #7a5538;
+            box-shadow: 0 0 0 4px rgba(122, 85, 56, 0.1);
+        }
+
+        .order-form textarea {
+            resize: vertical;
+            min-height: 40px;
+        }
+
+        .order-form .delivery-options {
+            display: flex;
+            gap: 8px;
+            margin: 6px 0;
+            flex-wrap: wrap;
+        }
+
+        .order-form .delivery-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #4d3424;
+            cursor: pointer;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            border: 2px solid rgba(180, 145, 115, 0.2);
+            transition: 0.3s;
+            margin: 0;
+        }
+
+        .order-form .delivery-options label.active {
+            border-color: #7a5538;
+            background: rgba(122, 85, 56, 0.08);
+        }
+
+        .order-form .delivery-options input[type="radio"] {
+            width: auto;
+            margin: 0;
+            accent-color: #7a5538;
+        }
+
+        .order-form .delivery-fields {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .order-form .delivery-fields.show {
+            display: block;
+        }
+
+        .order-form .table-number-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .order-form .table-number-row input {
+            flex: 1;
+        }
+
+        .btn-place-order {
+            width: 100%;
+            padding: 0.7rem;
+            background: linear-gradient(135deg, #7a5538, #5a3d28);
+            border: none;
+            border-radius: 60px;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 30px rgba(90, 60, 40, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .btn-place-order:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(90, 60, 40, 0.35);
+        }
+
+        .btn-place-order:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ====== ADMIN PANEL ====== */
+        .admin-panel {
+            padding: 1rem 0;
+        }
+
+        .admin-panel .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(180, 145, 115, 0.2);
+        }
+
+        .admin-panel .admin-header h2 {
+            color: #2c1a0e;
+            font-size: 1.8rem;
+        }
+
+        .admin-panel .admin-header h2 i {
+            color: #7a5538;
+        }
+
+        .admin-panel .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-panel .stat-card {
+            background: linear-gradient(165deg, #ffffff, #faf3eb);
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid rgba(200, 175, 155, 0.25);
+            box-shadow: 0 4px 15px rgba(80, 55, 35, 0.05);
+        }
+
+        .admin-panel .stat-card .stat-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #6b442b;
+        }
+
+        .admin-panel .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: #7a604b;
+            font-weight: 600;
+        }
+
+        .admin-panel .stat-card .stat-icon {
+            font-size: 1.8rem;
+            color: #b08868;
+            margin-bottom: 0.3rem;
+        }
+
+        /* ====== ORDERS TABLE ====== */
+        .orders-table-wrapper {
+            background: linear-gradient(165deg, #ffffff, #faf3eb);
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid rgba(200, 175, 155, 0.25);
+            overflow-x: auto;
+        }
+
+        .orders-table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .orders-table-wrapper table th {
+            background: rgba(180, 145, 115, 0.1);
+            color: #4d3424;
+            padding: 0.7rem 0.8rem;
+            text-align: right;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(180, 145, 115, 0.2);
+        }
+
+        .orders-table-wrapper table td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid rgba(180, 145, 115, 0.1);
+            color: #3d281b;
+        }
+
+        .orders-table-wrapper table tr:hover td {
+            background: rgba(180, 145, 115, 0.03);
+        }
+
+        .status-select {
+            padding: 0.2rem 0.5rem;
+            border-radius: 30px;
+            border: 2px solid rgba(180, 145, 115, 0.2);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            background: #fffcf8;
+            cursor: pointer;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: #7a5538;
+        }
+
+        .btn-delete-order {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+            padding: 0 4px;
+        }
+
+        .btn-delete-order:hover {
+            transform: scale(1.2);
+        }
+
+        /* ====== MENU MANAGEMENT ====== */
+        .menu-management {
+            margin-top: 2rem;
+        }
+
+        .menu-management .add-item-form {
+            background: linear-gradient(165deg, #ffffff, #faf3eb);
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid rgba(200, 175, 155, 0.25);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .menu-management .add-item-form .form-group {
+            margin: 0;
+        }
+
+        .menu-management .add-item-form label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #4d3424;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .menu-management .add-item-form input,
+        .menu-management .add-item-form select {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            border: 2px solid rgba(180, 145, 115, 0.2);
+            border-radius: 14px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85rem;
+            background: #fffcf8;
+            transition: 0.3s;
+            color: #2c1a0e;
+        }
+
+        .menu-management .add-item-form input:focus,
+        .menu-management .add-item-form select:focus {
+            outline: none;
+            border-color: #7a5538;
+            box-shadow: 0 0 0 4px rgba(122, 85, 56, 0.1);
+        }
+
+        .menu-management .add-item-form .btn-add-item {
+            background: linear-gradient(135deg, #7a5538, #5a3d28);
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(90, 60, 40, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .menu-management .add-item-form .btn-add-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(90, 60, 40, 0.3);
+        }
+
+        .menu-management .menu-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .menu-management .menu-item-card {
+            background: linear-gradient(165deg, #ffffff, #faf3eb);
+            border-radius: 20px;
+            padding: 1rem;
+            border: 1px solid rgba(200, 175, 155, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .menu-management .menu-item-card .item-preview-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #e8ddd0;
+        }
+
+        .menu-management .menu-item-card .item-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-management .menu-item-card .item-info .item-name {
+            font-weight: 700;
+            color: #2c1a0e;
+            font-size: 0.95rem;
+        }
+
+        .menu-management .menu-item-card .item-info .item-price {
+            font-weight: 700;
+            color: #6b442b;
+            font-size: 0.9rem;
+        }
+
+        .menu-management .menu-item-card .item-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .menu-management .menu-item-card .item-actions button {
+            flex: 1;
+            padding: 0.3rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .menu-management .menu-item-card .item-actions .btn-edit-item {
+            background: rgba(52, 152, 219, 0.15);
+            color: #2980b9;
+        }
+
+        .menu-management .menu-item-card .item-actions .btn-edit-item:hover {
+            background: rgba(52, 152, 219, 0.25);
+        }
+
+        .menu-management .menu-item-card .item-actions .btn-delete-item {
+            background: rgba(231, 76, 60, 0.15);
+            color: #c0392b;
+        }
+
+        .menu-management .menu-item-card .item-actions .btn-delete-item:hover {
+            background: rgba(231, 76, 60, 0.25);
+        }
+
+        /* ====== TOAST ====== */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 18, 10, 0.92);
+            backdrop-filter: blur(12px);
+            color: #f5ede7;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(200, 170, 145, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .cart-sidebar {
+                position: static;
+                order: -1;
+            }
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+            .admin-nav {
+                padding: 0.6rem 1.2rem;
+            }
+            .admin-nav .brand {
+                font-size: 1rem;
+            }
+            .admin-nav .nav-links button {
+                padding: 0.3rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .menu-container {
+                padding: 1.5rem 1.2rem;
+            }
+            .restaurant-header h1 {
+                font-size: 2.8rem;
+            }
+            .restaurant-header h1 .tent-icon {
+                font-size: 1.6rem;
+                padding: 0.1rem 0.5rem;
+            }
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+            .menu-item .image-container {
+                height: 130px;
+            }
+            .tabs {
+                gap: 4px;
+            }
+            .tab-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+            .admin-panel .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .menu-management .add-item-form {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .menu-container {
+                padding: 1rem 0.6rem;
+                border-radius: 30px;
+            }
+            .restaurant-header h1 {
+                font-size: 2rem;
+            }
+            .restaurant-header h1 .tent-icon {
+                font-size: 1.2rem;
+                padding: 0 0.4rem;
+            }
+            .subtitle {
+                font-size: 0.75rem;
+                padding: 0.2rem 1rem;
+            }
+            .menu-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.6rem;
+            }
+            .menu-item .image-container {
+                height: 100px;
+            }
+            .menu-item .item-content {
+                padding: 0.5rem 0.6rem 0.8rem;
+            }
+            .menu-item .item-content h3 {
+                font-size: 0.9rem;
+            }
+            .menu-item .item-content .price {
+                font-size: 1rem;
+                padding: 0.05rem 0.6rem;
+            }
+            .menu-item .item-content .add-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
+            .cart-sidebar {
+                padding: 1rem;
+            }
+            .tab-btn {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.65rem;
+                gap: 4px;
+            }
+            .tab-btn i {
+                font-size: 0.7rem;
+            }
+            .tabs {
+                border-radius: 40px;
+                padding: 0.15rem;
+                gap: 2px;
+            }
+            .admin-nav {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.6rem 1rem;
+                border-radius: 30px;
+            }
+            .admin-nav .nav-links {
+                justify-content: center;
+            }
+            .admin-nav .nav-links button {
+                padding: 0.25rem 0.7rem;
+                font-size: 0.7rem;
+            }
+            .admin-panel .admin-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.6rem;
+            }
+            .admin-panel .stat-card .stat-number {
+                font-size: 1.6rem;
+            }
+            .menu-management .add-item-form {
+                grid-template-columns: 1fr;
+            }
+            .orders-table-wrapper {
+                padding: 0.8rem;
+                font-size: 0.7rem;
+            }
+            .orders-table-wrapper table th,
+            .orders-table-wrapper table td {
+                padding: 0.4rem 0.4rem;
+                font-size: 0.7rem;
+            }
+            .order-form .delivery-options {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .order-form .delivery-options label {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            .order-form .table-number-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .admin-panel .admin-header h2 {
+                font-size: 1.2rem;
+            }
+            .menu-management .menu-items-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .menu-management .menu-item-card .item-preview-img {
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            .menu-item .image-container {
+                height: 140px;
+            }
+            .menu-management .menu-items-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== TOAST ====== -->
+    <div id="toastMessage" class="toast-msg"></div>
+
+    <!-- ====== ADMIN NAV ====== -->
+    <nav class="admin-nav" id="adminNav">
+        <div class="brand">
+            <i class="fas fa-tent"></i>
+            <span>الخيمة | لوحة الإدارة</span>
+        </div>
+        <div class="nav-links">
+            <button class="active" data-section="menu-section">
+                <i class="fas fa-utensils"></i> المنيو
+            </button>
+            <button data-section="orders-section">
+                <i class="fas fa-clipboard-list"></i> الطلبات
+                <span class="badge" id="ordersBadge">0</span>
+            </button>
+            <button data-section="admin-section">
+                <i class="fas fa-cog"></i> إدارة المنيو
+            </button>
+        </div>
+    </nav>
+
+    <!-- ====== MAIN ====== -->
+    <div class="menu-wrapper">
+        <div class="menu-container" id="app">
+
+            <!-- HEADER -->
+            <div class="restaurant-header">
+                <h1>
+                    <span class="tent-icon"><i class="fas fa-tent"></i></span>
+                    الخيمة
+                    <span class="tent-icon"><i class="fas fa-utensils"></i></span>
+                </h1>
+                <div class="subtitle">
+                    <i class="fas fa-fire"></i> أطباق شرقية & غربية <i class="fas fa-mug-hot"></i>
+                </div>
+            </div>
+
+            <!-- ====== MENU SECTION ====== -->
+            <div class="section active" id="menu-section">
+                <!-- TABS -->
+                <div class="tabs" id="tabsContainer">
+                    <button class="tab-btn active" data-category="all">
+                        <i class="fas fa-th-large"></i> الكل
+                        <span class="count-badge" id="countAll">0</span>
+                    </button>
+                    <button class="tab-btn" data-category="مشاوي">
+                        <i class="fas fa-drumstick-bite"></i> مشاوي
+                        <span class="count-badge" id="countمشاوي">0</span>
+                    </button>
+                    <button class="tab-btn" data-category="مقبلات">
+                        <i class="fas fa-pepper-hot"></i> مقبلات
+                        <span class="count-badge" id="countمقبلات">0</span>
+                    </button>
+                    <button class="tab-btn" data-category="مشروبات">
+                        <i class="fas fa-coffee"></i> مشروبات
+                        <span class="count-badge" id="countمشروبات">0</span>
+                    </button>
+                    <button class="tab-btn" data-category="حلويات">
+                        <i class="fas fa-cake"></i> حلويات
+                        <span class="count-badge" id="countحلويات">0</span>
+                    </button>
+                    <button class="tab-btn" data-category="أكلات شرقية">
+                        <i class="fas fa-utensil-spoon"></i> شرقية
+                        <span class="count-badge" id="countأكلات شرقية">0</span>
+                    </button>
+                    <button class="tab-btn" data-category="أكلات غربية">
+                        <i class="fas fa-pizza-slice"></i> غربية
+                        <span class="count-badge" id="countأكلات غربية">0</span>
+                    </button>
+                </div>
+
+                <!-- MAIN LAYOUT: MENU + CART -->
+                <div class="main-layout">
+                    <div class="menu-grid" id="menuGrid"></div>
+
+                    <!-- CART SIDEBAR -->
+                    <div class="cart-sidebar" id="cartSidebar">
+                        <div class="cart-header">
+                            <h2><i class="fas fa-shopping-cart"></i> سلة الطلبات</h2>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </div>
+
+                        <div class="cart-items" id="cartItems">
+                            <div class="empty-cart">
+                                <i class="fas fa-shopping-basket"></i>
+                                <p>السلة فارغة</p>
+                            </div>
+                        </div>
+
+                        <div class="cart-total">
+                            <span>المجموع</span>
+                            <span class="total-price" id="cartTotal">0.00 د.ع</span>
+                        </div>
+
+                        <!-- ORDER FORM -->
+                        <div class="order-form">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> الاسم</label>
+                                <input type="text" id="customerName" placeholder="أدخل اسمك" />
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> نوع الطلب</label>
+                                <div class="delivery-options">
+                                    <label class="active" id="dineInLabel">
+                                        <input type="radio" name="deliveryType" value="dinein" checked />
+                                        <i class="fas fa-chair"></i> طاولة المطعم
+                                    </label>
+                                    <label id="deliveryLabel">
+                                        <input type="radio" name="deliveryType" value="delivery" />
+                                        <i class="fas fa-truck"></i> توصيل للبيت
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group table-number-row" id="tableNumberRow">
+                                <label><i class="fas fa-hashtag"></i> رقم الطاولة</label>
+                                <input type="number" id="tableNumber" placeholder="مثال: 5" min="1" />
+                            </div>
+
+                            <div class="delivery-fields" id="deliveryFields">
+                                <div class="form-group">
+                                    <label><i class="fas fa-map-pin"></i> العنوان</label>
+                                    <input type="text" id="deliveryAddress" placeholder="المدينة، الشارع، رقم البيت" />
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-phone"></i> رقم الهاتف</label>
+                                    <input type="tel" id="deliveryPhone" placeholder="07XXXXXXXX" />
+                                </div>
+                            </div>
+
+                            <button class="btn-place-order" id="placeOrderBtn" disabled>
+                                <i class="fas fa-check-circle"></i> تأكيد الطلب
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== ORDERS SECTION ====== -->
+            <div class="section" id="orders-section">
+                <div class="admin-panel">
+                    <div class="admin-header">
+                        <h2><i class="fas fa-clipboard-list"></i> إدارة الطلبات</h2>
+                        <button class="btn-place-order" id="refreshOrdersBtn" style="width:auto; padding:0.4rem 1.5rem;">
+                            <i class="fas fa-sync-alt"></i> تحديث
+                        </button>
+                    </div>
+
+                    <div class="admin-stats" id="orderStats">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-number" id="statNew">0</div>
+                            <div class="stat-label">طلبات جديدة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-utensils"></i></div>
+                            <div class="stat-number" id="statPreparing">0</div>
+                            <div class="stat-label">قيد التحضير</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-number" id="statReady">0</div>
+                            <div class="stat-label">جاهز للتسليم</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-truck"></i></div>
+                            <div class="stat-number" id="statDelivered">0</div>
+                            <div class="stat-label">تم التوصيل</div>
+                        </div>
+                    </div>
+
+                    <div class="orders-table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>العميل</th>
+                                    <th>نوع الطلب</th>
+                                    <th>رقم الطاولة</th>
+                                    <th>الأطباق</th>
+                                    <th>المجموع</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <tr>
+                                    <td colspan="8" style="text-align:center; color:#7a604b; padding:2rem;">
+                                        <i class="fas fa-spinner fa-spin"></i> جاري تحميل الطلبات...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== ADMIN SECTION ====== -->
+            <div class="section" id="admin-section">
+                <div class="admin-panel">
+                    <div class="admin-header">
+                        <h2><i class="fas fa-cog"></i> إدارة المنيو</h2>
+                    </div>
+
+                    <div class="menu-management">
+                        <!-- Add Item Form -->
+                        <div class="add-item-form" id="addItemForm">
+                            <div class="form-group">
+                                <label><i class="fas fa-utensils"></i> اسم الطبق</label>
+                                <input type="text" id="newItemName" placeholder="اسم الطبق" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> التصنيف</label>
+                                <select id="newItemCategory">
+                                    <option value="مشاوي">مشاوي</option>
+                                    <option value="مقبلات">مقبلات</option>
+                                    <option value="مشروبات">مشروبات</option>
+                                    <option value="حلويات">حلويات</option>
+                                    <option value="أكلات شرقية">أكلات شرقية</option>
+                                    <option value="أكلات غربية">أكلات غربية</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-money-bill"></i> السعر (د.ع)</label>
+                                <input type="number" id="newItemPrice" placeholder="السعر" min="1" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-align-left"></i> الوصف</label>
+                                <input type="text" id="newItemDesc" placeholder="وصف قصير" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-image"></i> رابط الصورة</label>
+                                <input type="text" id="newItemImage" placeholder="https://..." />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-star"></i> مميز</label>
+                                <select id="newItemPopular">
+                                    <option value="false">لا</option>
+                                    <option value="true">نعم</option>
+                                </select>
+                            </div>
+                            <button class="btn-add-item" id="addItemBtn">
+                                <i class="fas fa-plus"></i> إضافة طبق
+                            </button>
+                        </div>
+
+                        <!-- Menu Items List -->
+                        <div class="menu-items-grid" id="menuItemsGrid">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ================ FIREBASE + APP (ES Module) ================ -->
+    <script type="module">
+        // ---------- Firebase Config ----------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+        import {
+            getFirestore,
+            collection,
+            getDocs,
+            query,
+            orderBy,
+            writeBatch,
+            doc,
+            addDoc,
+            serverTimestamp,
+            deleteDoc,
+            updateDoc,
+            onSnapshot,
+        } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAp6H_l1gPWzVy4b7RFkUCSIiBizTOWwU8",
+            authDomain: "zahra-13ce6.firebaseapp.com",
+            projectId: "zahra-13ce6",
+            storageBucket: "zahra-13ce6.firebasestorage.app",
+            messagingSenderId: "543638346280",
+            appId: "1:543638346280:web:5cb31c1e44a5608854731d",
+            measurementId: "G-0545XEBHLE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // ---------- بيانات افتراضية ----------
+        const DEFAULT_MENU = [{
+            id: 'm1',
+            name: 'مشاوي الخيمة',
+            category: 'مشاوي',
+            price: 45,
+            desc: 'لحم غنم طازج مع بهارات خاصة',
+            popular: true,
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop'
+        }, {
+            id: 'm2',
+            name: 'أسياخ الدجاج',
+            category: 'مشاوي',
+            price: 38,
+            desc: 'دجاج متبل بالليمون والثوم',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&h=300&fit=crop'
+        }, {
+            id: 'm3',
+            name: 'تبولة',
+            category: 'مقبلات',
+            price: 18,
+            desc: 'تبولة طازجة مع نعناع وليمون',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1515516969-d4008cc6241a?w=400&h=300&fit=crop'
+        }, {
+            id: 'm4',
+            name: 'حمص بالطحينة',
+            category: 'مقبلات',
+            price: 16,
+            desc: 'حمص كريمي مع زيت زيتون',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=400&h=300&fit=crop'
+        }, {
+            id: 'm5',
+            name: 'قهوة عربية',
+            category: 'مشروبات',
+            price: 12,
+            desc: 'هيل وقرنفل - قهوة سادة',
+            popular: true,
+            image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop'
+        }, {
+            id: 'm6',
+            name: 'شاي بالنعناع',
+            category: 'مشروبات',
+            price: 10,
+            desc: 'نعناع طازج مع سكر',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&h=300&fit=crop'
+        }, {
+            id: 'm7',
+            name: 'كنافة',
+            category: 'حلويات',
+            price: 22,
+            desc: 'كنافة مع قشطة وفستق حلبي',
+            popular: true,
+            image: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=400&h=300&fit=crop'
+        }, {
+            id: 'm8',
+            name: 'بقلاوة',
+            category: 'حلويات',
+            price: 20,
+            desc: 'فستق حلبي وعسل طبيعي',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop'
+        }, {
+            id: 'm9',
+            name: 'مشاوي مشكلة',
+            category: 'مشاوي',
+            price: 55,
+            desc: 'تشكيلة من اللحم والدجاج والكباب',
+            popular: true,
+            image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop'
+        }, {
+            id: 'm10',
+            name: 'فتوش',
+            category: 'مقبلات',
+            price: 15,
+            desc: 'خس، خيار، طماطم، خبز محمص',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop'
+        }, {
+            id: 'm11',
+            name: 'عصير برتقال طازج',
+            category: 'مشروبات',
+            price: 8,
+            desc: 'عصير برتقال طبيعي 100%',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=300&fit=crop'
+        }, {
+            id: 'm12',
+            name: 'مغاطس',
+            category: 'حلويات',
+            price: 18,
+            desc: 'مغطس بالقطر والفستق',
+            popular: false,
+            image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&h=300&fit=crop'
+        }];
+
+        // ---------- State ----------
+        let menuItems = [];
+        let currentCategory = 'all';
+        let cart = [];
+        let orders = [];
+
+        // DOM refs
+        const grid = document.getElementById('menuGrid');
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartCountEl = document.getElementById('cartCount');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const toastEl = document.getElementById('toastMessage');
+        const placeOrderBtn = document.getElementById('placeOrderBtn');
+        const customerName = document.getElementById('customerName');
+        const deliveryAddress = document.getElementById('deliveryAddress');
+        const deliveryPhone = document.getElementById('deliveryPhone');
+        const deliveryFields = document.getElementById('deliveryFields');
+        const tableNumber = document.getElementById('tableNumber');
+        const dineInLabel = document.getElementById('dineInLabel');
+        const deliveryLabel = document.getElementById('deliveryLabel');
+        const ordersBadge = document.getElementById('ordersBadge');
+        const ordersTableBody = document.getElementById('ordersTableBody');
+
+        // Count badges
+        const countBadges = {
+            all: document.getElementById('countAll'),
+            مشاوي: document.getElementById('countمشاوي'),
+            مقبلات: document.getElementById('countمقبلات'),
+            مشروبات: document.getElementById('countمشروبات'),
+            حلويات: document.getElementById('countحلويات'),
+            'أكلات شرقية': document.getElementById('countأكلات شرقية'),
+            'أكلات غربية': document.getElementById('countأكلات غربية'),
+        };
+
+        // ---------- Toast ----------
+        function showToast(msg, isError = false) {
+            toastEl.style.display = 'block';
+            toastEl.textContent = msg;
+            toastEl.style.background = isError ? 'rgba(120,30,20,0.92)' : 'rgba(30,18,10,0.92)';
+            toastEl.style.color = '#f5ede7';
+            clearTimeout(toastEl._timeout);
+            toastEl._timeout = setTimeout(() => {
+                toastEl.style.display = 'none';
+            }, 3500);
+        }
+
+        // ---------- Navigation ----------
+        function setupNavigation() {
+            const navBtns = document.querySelectorAll('.nav-links button');
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const sectionId = this.dataset.section;
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+        }
+
+        // ---------- Update category counts ----------
+        function updateCounts() {
+            const cats = ['all', 'مشاوي', 'مقبلات', 'مشروبات', 'حلويات', 'أكلات شرقية', 'أكلات غربية'];
+            cats.forEach(cat => {
+                const count = cat === 'all' ? menuItems.length : menuItems.filter(i => i.category === cat).length;
+                if (countBadges[cat]) countBadges[cat].textContent = count;
+            });
+        }
+
+        // ---------- Render Menu ----------
+        function renderMenu(category = 'all') {
+            let filtered = category === 'all' ? [...menuItems] : menuItems.filter(i => i.category === category);
+            updateCounts();
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:2rem; color:#6a4d34;">
+                        <i class="fas fa-utensils" style="font-size:2.5rem; opacity:0.25; margin-bottom:0.5rem;"></i>
+                        <p style="font-weight:600;">لا توجد أطباق في هذا التصنيف</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(item => {
+                const popular = item.popular ? `<span class="popular-badge"><i class="fas fa-star"></i> الأكثر طلباً</span>` :
+                    '';
+                const imageUrl = item.image ||
+                    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+                const inCart = cart.find(c => c.id === item.id);
+                const btnText = inCart ? `<i class="fas fa-check"></i>` : `<i class="fas fa-plus"></i>`;
+                html += `
+                    <div class="menu-item" data-id="${item.id}">
+                        <div class="image-container">
+                            <img src="${imageUrl}" alt="${item.name}" loading="lazy" />
+                            <span class="category-tag"><i class="fas fa-tag"></i> ${item.category}</span>
+                            ${popular}
+                        </div>
+                        <div class="item-content">
+                            <h3>${item.name}</h3>
+                            <div class="desc">${item.desc || ''}</div>
+                            <div class="bottom-row">
+                                <span class="price">
+                                    ${item.price} <span class="currency">د.ع</span>
+                                </span>
+                                <button class="add-btn" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">
+                                    ${btnText}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+                    toggleCartItem(id, name, price, this);
+                });
+            });
+        }
+
+        // ---------- Cart Functions ----------
+        function toggleCartItem(id, name, price, btnElement) {
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                cart = cart.filter(c => c.id !== id);
+                if (btnElement) btnElement.innerHTML = `<i class="fas fa-plus"></i>`;
+                showToast(`❌ تم إزالة "${name}" من السلة`);
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+                if (btnElement) btnElement.innerHTML = `<i class="fas fa-check"></i>`;
+                showToast(`✅ تم إضافة "${name}" إلى السلة`);
+            }
+            updateCart();
+            updateMenuButtons();
+        }
+
+        function removeFromCart(id) {
+            const item = cart.find(c => c.id === id);
+            cart = cart.filter(c => c.id !== id);
+            if (item) showToast(`❌ تم إزالة "${item.name}" من السلة`);
+            updateCart();
+            updateMenuButtons();
+        }
+
+        function updateMenuButtons() {
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                const id = btn.dataset.id;
+                const inCart = cart.find(c => c.id === id);
+                btn.innerHTML = inCart ? `<i class="fas fa-check"></i>` : `<i class="fas fa-plus"></i>`;
+            });
+        }
+
+        function updateCart() {
+            // حساب المجموع بشكل صحيح
+            const total = cart.reduce((sum, item) => {
+                return sum + (item.price * item.quantity);
+            }, 0);
+
+            cartCountEl.textContent = cart.length;
+
+            // عرض المجموع بدون كسور عشرية غير ضرورية
+            if (total % 1 === 0) {
+                cartTotalEl.textContent = total + ' د.ع';
+            } else {
+                cartTotalEl.textContent = total.toFixed(2) + ' د.ع';
+            }
+
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>السلة فارغة</p>
+                    </div>
+                `;
+                placeOrderBtn.disabled = true;
+                return;
+            }
+
+            let html = '';
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <span class="item-name">${item.name}</span>
+                            <span class="item-qty">${item.quantity}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span class="cart-item-price">${itemTotal} د.ع</span>
+                            <button class="remove-btn" data-id="${item.id}"><i class="fas fa-times-circle"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            cartItemsEl.innerHTML = html;
+
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    removeFromCart(this.dataset.id);
+                });
+            });
+
+            placeOrderBtn.disabled = false;
+        }
+
+        // ---------- Delivery Options ----------
+        document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.delivery-options label').forEach(l => l.classList.remove('active'));
+                this.closest('label').classList.add('active');
+
+                if (this.value === 'delivery') {
+                    deliveryFields.classList.add('show');
+                    document.getElementById('tableNumberRow').style.display = 'none';
+                } else {
+                    deliveryFields.classList.remove('show');
+                    document.getElementById('tableNumberRow').style.display = 'flex';
+                }
+            });
+        });
+
+        // ---------- Place Order ----------
+        placeOrderBtn.addEventListener('click', async function() {
+            const name = customerName.value.trim();
+            if (!name) {
+                showToast('⚠️ الرجاء إدخال الاسم', true);
+                customerName.focus();
+                return;
+            }
+
+            const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+            let address = '';
+            let phone = '';
+            let tableNum = '';
+
+            if (deliveryType === 'dinein') {
+                tableNum = tableNumber.value.trim();
+                if (!tableNum) {
+                    showToast('⚠️ الرجاء إدخال رقم الطاولة', true);
+                    tableNumber.focus();
+                    return;
+                }
+            } else {
+                address = deliveryAddress.value.trim();
+                phone = deliveryPhone.value.trim();
+                if (!address) {
+                    showToast('⚠️ الرجاء إدخال عنوان التوصيل', true);
+                    deliveryAddress.focus();
+                    return;
+                }
+                if (!phone || phone.length < 8) {
+                    showToast('⚠️ الرجاء إدخال رقم هاتف صحيح', true);
+                    deliveryPhone.focus();
+                    return;
+                }
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            const orderData = {
+                customerName: name,
+                deliveryType: deliveryType,
+                tableNumber: deliveryType === 'dinein' ? tableNum : '',
+                deliveryAddress: deliveryType === 'delivery' ? address : '',
+                deliveryPhone: deliveryType === 'delivery' ? phone : '',
+                items: cart.map(c => ({ id: c.id, name: c.name, price: c.price, quantity: c.quantity })),
+                total: total,
+                status: 'جديد',
+                createdAt: serverTimestamp(),
+            };
+
+            try {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التأكيد...';
+                this.disabled = true;
+
+                await addDoc(collection(db, 'orders'), orderData);
+
+                const deliveryText = deliveryType === 'dinein' ? `طاولة رقم ${tableNum}` : `توصيل إلى ${address}`;
+                showToast(`✅ تم تأكيد طلبك بنجاح! ${deliveryText} 🌹`);
+                cart = [];
+                updateCart();
+                updateMenuButtons();
+                customerName.value = '';
+                deliveryAddress.value = '';
+                deliveryPhone.value = '';
+                tableNumber.value = '';
+
+                document.querySelector('input[name="deliveryType"][value="dinein"]').checked = true;
+                document.querySelectorAll('.delivery-options label').forEach(l => l.classList.remove('active'));
+                dineInLabel.classList.add('active');
+                deliveryFields.classList.remove('show');
+                document.getElementById('tableNumberRow').style.display = 'flex';
+
+            } catch (error) {
+                console.error('Order error:', error);
+                showToast('❌ فشل تأكيد الطلب: ' + error.message, true);
+            } finally {
+                this.innerHTML = '<i class="fas fa-check-circle"></i> تأكيد الطلب';
+                this.disabled = false;
+            }
+        });
+
+        // ---------- Load Orders (Real-time) ----------
+        function loadOrdersRealtime() {
+            const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
+
+            onSnapshot(q, (snapshot) => {
+                orders = [];
+                snapshot.forEach((doc) => {
+                    orders.push({ id: doc.id, ...doc.data() });
+                });
+
+                updateOrdersBadge();
+                renderOrdersTable();
+                updateOrderStats();
+            }, (error) => {
+                console.error('Orders snapshot error:', error);
+            });
+        }
+
+        function updateOrdersBadge() {
+            const newOrders = orders.filter(o => o.status === 'جديد');
+            ordersBadge.textContent = newOrders.length;
+            ordersBadge.style.display = newOrders.length > 0 ? 'inline' : 'none';
+        }
+
+        function updateOrderStats() {
+            const newCount = orders.filter(o => o.status === 'جديد').length;
+            const preparingCount = orders.filter(o => o.status === 'قيد التحضير').length;
+            const readyCount = orders.filter(o => o.status === 'جاهز للتسليم').length;
+            const deliveredCount = orders.filter(o => o.status === 'تم التوصيل').length;
+
+            document.getElementById('statNew').textContent = newCount;
+            document.getElementById('statPreparing').textContent = preparingCount;
+            document.getElementById('statReady').textContent = readyCount;
+            document.getElementById('statDelivered').textContent = deliveredCount;
+        }
+
+        function renderOrdersTable() {
+            if (orders.length === 0) {
+                ordersTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align:center; color:#7a604b; padding:2rem;">
+                            <i class="fas fa-inbox" style="font-size:2rem; opacity:0.3; display:block; margin-bottom:0.5rem;"></i>
+                            لا توجد طلبات حالياً
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            orders.forEach((order, index) => {
+                const itemsText = order.items ? order.items.map(i => i.name).join(', ') : '';
+
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${order.customerName || 'غير معروف'}</strong></td>
+                        <td>${order.deliveryType === 'dinein' ? '<i class="fas fa-chair"></i> طاولة' : '<i class="fas fa-truck"></i> توصيل'}</td>
+                        <td>${order.tableNumber || '-'}</td>
+                        <td style="font-size:0.8rem;">${itemsText}</td>
+                        <td><strong>${order.total ? order.total : '0'} د.ع</strong></td>
+                        <td>
+                            <select class="status-select" data-order-id="${order.id}" data-current="${order.status}">
+                                <option value="جديد" ${order.status === 'جديد' ? 'selected' : ''}>جديد</option>
+                                <option value="قيد التحضير" ${order.status === 'قيد التحضير' ? 'selected' : ''}>قيد التحضير</option>
+                                <option value="جاهز للتسليم" ${order.status === 'جاهز للتسليم' ? 'selected' : ''}>جاهز للتسليم</option>
+                                <option value="تم التوصيل" ${order.status === 'تم التوصيل' ? 'selected' : ''}>تم التوصيل</option>
+                                <option value="ملغي" ${order.status === 'ملغي' ? 'selected' : ''}>ملغي</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn-delete-order" data-order-id="${order.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            ordersTableBody.innerHTML = html;
+
+            // Status change handlers
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', async function() {
+                    const orderId = this.dataset.orderId;
+                    const newStatus = this.value;
+                    try {
+                        await updateDoc(doc(db, 'orders', orderId), { status: newStatus });
+                        showToast(`✅ تم تحديث حالة الطلب إلى "${newStatus}"`);
+                    } catch (error) {
+                        console.error('Status update error:', error);
+                        showToast('❌ فشل تحديث الحالة', true);
+                        this.value = this.dataset.current;
+                    }
+                });
+            });
+
+            // Delete order handlers
+            document.querySelectorAll('.btn-delete-order').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const orderId = this.dataset.orderId;
+                    if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) {
+                        try {
+                            await deleteDoc(doc(db, 'orders', orderId));
+                            showToast('✅ تم حذف الطلب');
+                        } catch (error) {
+                            console.error('Delete error:', error);
+                            showToast('❌ فشل حذف الطلب', true);
+                        }
+                    }
+                });
+            });
+        }
+
+        // ---------- Load Menu from Firestore ----------
+        async function loadMenuFromFirestore() {
+            try {
+                const q = query(collection(db, 'menu'), orderBy('name'));
+                const querySnapshot = await getDocs(q);
+                const loaded = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    loaded.push({
+                        id: doc.id,
+                        name: data.name || 'طبق',
+                        category: data.category || 'عام',
+                        price: data.price || 0,
+                        desc: data.desc || '',
+                        popular: data.popular || false,
+                        image: data.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+                    });
+                });
+
+                if (loaded.length > 0) {
+                    menuItems = loaded;
+                    renderMenu(currentCategory);
+                    renderAdminMenuItems();
+                } else {
+                    menuItems = DEFAULT_MENU.map(item => ({ ...item }));
+                    renderMenu(currentCategory);
+                    renderAdminMenuItems();
+                    await saveMenuToFirestore(true);
+                }
+            } catch (error) {
+                console.error('Firestore load error:', error);
+                menuItems = DEFAULT_MENU.map(item => ({ ...item }));
+                renderMenu(currentCategory);
+                renderAdminMenuItems();
+                showToast('⚠️ تعذر الاتصال بقاعدة البيانات، تم استخدام البيانات المحلية', true);
+            }
+        }
+
+        // ---------- Save Menu to Firestore ----------
+        async function saveMenuToFirestore(silent = false) {
+            try {
+                const menuCollection = collection(db, 'menu');
+                const snapshot = await getDocs(menuCollection);
+                const batch = writeBatch(db);
+                snapshot.forEach((docSnap) => {
+                    batch.delete(docSnap.ref);
+                });
+                menuItems.forEach((item) => {
+                    const newDoc = doc(menuCollection);
+                    batch.set(newDoc, {
+                        name: item.name,
+                        category: item.category,
+                        price: item.price,
+                        desc: item.desc || '',
+                        popular: item.popular || false,
+                        image: item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+                    });
+                });
+                await batch.commit();
+                if (!silent) {
+                    showToast(`✅ تم حفظ ${menuItems.length} صنف في قاعدة البيانات`);
+                    renderAdminMenuItems();
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                if (!silent) showToast('❌ فشل الحفظ: ' + error.message, true);
+            }
+        }
+
+        // ---------- Render Admin Menu Items ----------
+        function renderAdminMenuItems() {
+            const grid = document.getElementById('menuItemsGrid');
+            if (menuItems.length === 0) {
+                grid.innerHTML = `<p style="color:#7a604b; text-align:center; padding:2rem;">لا توجد أطباق مضافة</p>`;
+                return;
+            }
+
+            let html = '';
+            menuItems.forEach(item => {
+                const imageUrl = item.image ||
+                    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+                html += `
+                    <div class="menu-item-card" data-id="${item.id}">
+                        <img src="${imageUrl}" alt="${item.name}" class="item-preview-img" />
+                        <div class="item-info">
+                            <span class="item-name">${item.name}</span>
+                            <span class="item-price">${item.price} د.ع</span>
+                        </div>
+                        <div style="font-size:0.7rem; color:#7a604b;">${item.category} ${item.popular ? '⭐' : ''}</div>
+                        <div class="item-actions">
+                            <button class="btn-edit-item" data-id="${item.id}"><i class="fas fa-edit"></i> تعديل</button>
+                            <button class="btn-delete-item" data-id="${item.id}"><i class="fas fa-trash"></i> حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+
+            // Delete handlers
+            document.querySelectorAll('.btn-delete-item').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const id = this.dataset.id;
+                    if (confirm(`هل أنت متأكد من حذف هذا الطبق؟`)) {
+                        menuItems = menuItems.filter(item => item.id !== id);
+                        renderMenu(currentCategory);
+                        renderAdminMenuItems();
+                        await saveMenuToFirestore(false);
+                        showToast('✅ تم حذف الطبق');
+                    }
+                });
+            });
+
+            // Edit handlers
+            document.querySelectorAll('.btn-edit-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const item = menuItems.find(i => i.id === id);
+                    if (!item) return;
+
+                    const newName = prompt('اسم الطبق:', item.name);
+                    if (newName && newName.trim()) item.name = newName.trim();
+
+                    const newPrice = prompt('السعر (د.ع):', item.price);
+                    if (newPrice && !isNaN(newPrice)) item.price = parseFloat(newPrice);
+
+                    const newDesc = prompt('الوصف:', item.desc);
+                    if (newDesc !== null) item.desc = newDesc;
+
+                    const newCategory = prompt('التصنيف (مشاوي/مقبلات/مشروبات/حلويات/أكلات شرقية/أكلات غربية):', item
+                        .category);
+                    if (newCategory && newCategory.trim()) item.category = newCategory.trim();
+
+                    renderMenu(currentCategory);
+                    renderAdminMenuItems();
+                    saveMenuToFirestore(false);
+                    showToast('✅ تم تحديث الطبق');
+                });
+            });
+        }
+
+        // ---------- Add New Item ----------
+        document.getElementById('addItemBtn').addEventListener('click', async function() {
+            const name = document.getElementById('newItemName').value.trim();
+            const category = document.getElementById('newItemCategory').value;
+            const price = parseFloat(document.getElementById('newItemPrice').value);
+            const desc = document.getElementById('newItemDesc').value.trim();
+            const image = document.getElementById('newItemImage').value.trim();
+            const popular = document.getElementById('newItemPopular').value === 'true';
+
+            if (!name) {
+                showToast('⚠️ الرجاء إدخال اسم الطبق', true);
+                return;
+            }
+            if (isNaN(price) || price <= 0) {
+                showToast('⚠️ الرجاء إدخال سعر صحيح', true);
+                return;
+            }
+
+            const newItem = {
+                id: 'item_' + Date.now(),
+                name,
+                category,
+                price,
+                desc,
+                image: image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+                popular
+            };
+
+            menuItems.push(newItem);
+            renderMenu(currentCategory);
+            renderAdminMenuItems();
+
+            // Clear form
+            document.getElementById('newItemName').value = '';
+            document.getElementById('newItemPrice').value = '';
+            document.getElementById('newItemDesc').value = '';
+            document.getElementById('newItemImage').value = '';
+
+            await saveMenuToFirestore(false);
+            showToast(`✅ تم إضافة "${name}" بنجاح`);
+        });
+
+        // ---------- Refresh Orders ----------
+        document.getElementById('refreshOrdersBtn').addEventListener('click', () => {
+            showToast('🔄 جاري تحديث الطلبات...');
+            loadOrdersRealtime();
+        });
+
+        // ---------- Tabs ----------
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabs.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.dataset.category;
+                    renderMenu(currentCategory);
+                });
+            });
+        }
+
+        // ---------- Init ----------
+        async function init() {
+            setupNavigation();
+            setupTabs();
+            await loadMenuFromFirestore();
+            loadOrdersRealtime();
+
+            customerName.addEventListener('input', () => {
+                placeOrderBtn.disabled = cart.length === 0;
+            });
+        }
+
+        init();
+    </script>
+
+</body>
+</html>

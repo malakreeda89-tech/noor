@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نورالهدى رضا | Web Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-soft: #111;
+  --text: #f5f5f5;
+  --text-muted: #999;
+  --accent: #00d4ff;
+  --accent2: #ff00aa;
+  --border: #222;
+}
+
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --bg-soft: #fff;
+  --text: #111;
+  --text-muted: #555;
+  --border: #e0e0e0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 999;
+  transition: 0.3s;
+}
+
+.theme-toggle:hover {
+  transform: rotate(180deg) scale(1.1);
+  border-color: var(--accent);
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,212,255,0.15), transparent 70%);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,0,170,0.12), transparent 70%);
+  border-radius: 50%;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, -30px); }
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.greeting {
+  color: var(--accent);
+  font-size: 1rem;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.name {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--text), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+
+.role {
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
+}
+
+.tagline {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s forwards;
+}
+
+.btn {
+  display: inline-block;
+  padding: 14px 36px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s forwards;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-image {
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.2s forwards;
+}
+
+.profile-wrapper {
+  position: relative;
+  width: 320px;
+  height: 320px;
+}
+
+.profile-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent));
+  animation: spin 4s linear infinite;
+  z-index: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.profile-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid var(--bg);
+  z-index: 1;
+  background: var(--bg-soft);
+}
+
+.section { padding: 100px 0; }
+.section-dark { background: var(--bg-soft); }
+
+.section-number {
+  color: var(--accent);
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  margin-bottom: 50px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  display: inline-block;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.cv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.cv-card {
+  background: var(--bg);
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  transition: 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cv-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);
+}
+
+.cv-card h3 {
+  color: var(--accent);
+  margin-bottom: 16px;
+  font-size: 1.15rem;
+}
+
+.cv-card ul { list-style: none; }
+
+.cv-card ul li {
+  padding: 6px 18px 6px 0;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.cv-card ul li::before {
+  content: "▹";
+  color: var(--accent);
+  position: absolute;
+  right: 0;
+}
+
+.cv-card p { color: var(--text-muted); }
+
+.contact-text {
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.contact-card {
+  background: var(--bg);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.contact-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 212, 255, 0.15);
+}
+
+.contact-card .icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.contact-card .label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.contact-card .value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent);
+  direction: ltr;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.copy-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  opacity: 0.6;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+  .hero-image { order: -1; }
+  .profile-wrapper { width: 220px; height: 220px; }
+  .section { padding: 60px 0; }
+  .theme-toggle { top: 12px; left: 12px; width: 42px; height: 42px; }
+  .contact-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<button class="theme-toggle" id="themeToggle" title="تبديل الثيم">🌙</button>
+
+<!-- ===== الهيدر ===== -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="greeting">HI, I'M</p>
+        <h1 class="name">نورالهدى رضا</h1>
+        <h2 class="role">Web Developer</h2>
+        <p class="tagline">
+          طالبة هندسة حاسوب، أبني واجهات وتطبيقات ويب متكاملة باستخدام
+          Flutter Web و Python — من الفكرة إلى منتج جاهز.
+        </p>
+        <a href="#contact" class="btn">📄 تواصل معي</a>
+      </div>
+
+      <div class="hero-image">
+        <div class="profile-wrapper">
+          <img src="https://i.ibb.co/Q3F0KBx1/photo-2026-09-08-13-21-34.jpg" alt="صورتي" class="profile-img"
+               onerror="this.src='https://ui-avatars.com/api/?name=Noor&size=400&background=00d4ff&color=fff&bold=true'">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== السيرة الذاتية ===== -->
+<section id="cv" class="section">
+  <div class="container">
+    <span class="section-number">01</span>
+    <h2 class="section-title">السيرة الذاتية</h2>
+
+    <div class="cv-grid">
+      <div class="cv-card">
+        <h3>👤 المعلومات الشخصية</h3>
+        <ul>
+          <li><strong>الاسم:</strong> نورالهدى رضا كمر</li>
+          <li><strong>الميلاد:</strong> 2007</li>
+          <li><strong>الإقامة:</strong> العراق، بغداد</li>
+        </ul>
+      </div>
+
+      <div class="cv-card">
+        <h3>🎓 التعليم الأكاديمي</h3>
+        <p>طالبة في مرحلة البكالوريوس — هندسة الحاسوب</p>
+      </div>
+
+      <div class="cv-card">
+        <h3>💻 المشاريع البرمجية</h3>
+        <p>تطوير وبناء واجهة موقع بورتفوليو شخصي شامل ومتجاوب،
+           لعرض الحلول والخدمات البرمجية.</p>
+      </div>
+
+      <div class="cv-card">
+        <h3>⚡ المهارات التقنية</h3>
+        <ul>
+          <li>برمجة مواقع</li>
+          <li>بايثون</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== التواصل ===== -->
+<section id="contact" class="section section-dark">
+  <div class="container">
+    <span class="section-number">02</span>
+    <h2 class="section-title">تواصل معي</h2>
+    <p class="contact-text">
+      متوفرة للعمل على مشاريع ويب وتطوير واجهات — تواصل عبر أي من القنوات التالية.
+    </p>
+
+    <div class="contact-grid">
+
+      <!-- 📱 الرقم -->
+      <div class="contact-card" onclick="copyText('07716500204', this)">
+        <span class="icon">📱</span>
+        <div class="label">رقم الهاتف</div>
+        <div class="value">07716500204</div>
+        <div class="copy-hint">اضغط للنسخ</div>
+      </div>
+
+      <!-- 📸 إنستغرام -->
+      <div class="contact-card" onclick="copyText('5n1rl', this)">
+        <span class="icon">📸</span>
+        <div class="label">إنستغرام</div>
+        <div class="value">@5n1rl</div>
+        <div class="copy-hint">اضغط للنسخ</div>
+      </div>
+
+      <!-- 💻 GitHub -->
+      <div class="contact-card" onclick="copyText('username', this)">
+        <span class="icon">💻</span>
+        <div class="label">GitHub</div>
+        <div class="value">@username</div>
+        <div class="copy-hint">اضغط للنسخ</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 نورالهدى رضا — جميع الحقوق محفوظة</p>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+});
+
+function copyText(text, element) {
+  navigator.clipboard.writeText(text).then(() => {
+    const hint = element.querySelector('.copy-hint');
+    const original = hint.textContent;
+    hint.textContent = '✅ تم النسخ!';
+    hint.style.color = '#25d366';
+    setTimeout(() => {
+      hint.textContent = original;
+      hint.style.color = '';
+    }, 1500);
+  });
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.cv-card, .contact-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = '0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
